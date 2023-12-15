@@ -1,0 +1,13 @@
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Debug\AttendanceOptimized.exe.config
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Debug\AttendanceOptimized.exe
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Debug\AttendanceOptimized.pdb
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Debug\Interop.zkemkeeper.dll
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.csproj.AssemblyReference.cache
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.csproj.SuggestedBindingRedirects.cache
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.Main.resources
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.Properties.Resources.resources
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.csproj.GenerateResource.cache
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.csproj.CoreCompileInputs.cache
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.csproj.CopyComplete
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.exe
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Debug\AttendanceOptimized.pdb
