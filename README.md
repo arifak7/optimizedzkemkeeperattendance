@@ -1,4 +1,3 @@
-﻿!!! Arif AK !!!
 
 make sure to properly configure it to the desired bit architecture in default application pool that prioritizes 32/64 bits
 
