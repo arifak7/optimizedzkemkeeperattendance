@@ -3,7 +3,6 @@ C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Rele
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Release\AttendanceOptimized.pdb
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Release\Interop.zkemkeeper.dll
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.csproj.AssemblyReference.cache
-C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.csproj.SuggestedBindingRedirects.cache
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.Main.resources
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.Properties.Resources.resources
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.csproj.GenerateResource.cache
@@ -18,3 +17,4 @@ C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Rele
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.DatabaseSettings.resources
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Release\System.Data.Common.dll
 C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\bin\x86\Release\System.Data.SqlClient.dll
+C:\Users\jacob\source\repos\AttendanceOptimized\AttendanceOptimized\obj\x86\Release\AttendanceOptimized.ErrorLog.resources

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="126384">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="130992">
       <assemblyIdentity name="AttendanceOptimized" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Nz3a5Ps913z8e5NEYJLSWLjVJl5nDjKTZRtbfK4Rf90=</dsig:DigestValue>
+        <dsig:DigestValue>DsipyragFoW7YwQUrNv4it37jUdmJ9t/3lcmRqDKfjA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

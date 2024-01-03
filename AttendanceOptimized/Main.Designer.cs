@@ -80,6 +80,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.errorCount = new System.Windows.Forms.Label();
+            this.timeControl = new System.Windows.Forms.NumericUpDown();
             this.panel18 = new System.Windows.Forms.Panel();
             this.manualCheckBox = new System.Windows.Forms.CheckBox();
             this.date_used = new System.Windows.Forms.DateTimePicker();
@@ -92,6 +94,7 @@
             this.connectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -110,6 +113,7 @@
             this.panel13.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.timeControl)).BeginInit();
             this.panel18.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -602,6 +606,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel3.Controls.Add(this.errorCount);
+            this.panel3.Controls.Add(this.timeControl);
             this.panel3.Controls.Add(this.panel18);
             this.panel3.Controls.Add(this.date_used);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -611,6 +617,40 @@
             this.panel3.Size = new System.Drawing.Size(1176, 44);
             this.panel3.TabIndex = 1;
             // 
+            // errorCount
+            // 
+            this.errorCount.Dock = System.Windows.Forms.DockStyle.Left;
+            this.errorCount.ForeColor = System.Drawing.Color.Red;
+            this.errorCount.Location = new System.Drawing.Point(465, 10);
+            this.errorCount.Name = "errorCount";
+            this.errorCount.Size = new System.Drawing.Size(88, 24);
+            this.errorCount.TabIndex = 3;
+            this.errorCount.Text = "0";
+            this.errorCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // timeControl
+            // 
+            this.timeControl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.timeControl.Location = new System.Drawing.Point(368, 10);
+            this.timeControl.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.timeControl.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.timeControl.Name = "timeControl";
+            this.timeControl.Size = new System.Drawing.Size(97, 23);
+            this.timeControl.TabIndex = 2;
+            this.timeControl.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // panel18
             // 
             this.panel18.Controls.Add(this.manualCheckBox);
@@ -618,7 +658,7 @@
             this.panel18.Location = new System.Drawing.Point(174, 10);
             this.panel18.Name = "panel18";
             this.panel18.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.panel18.Size = new System.Drawing.Size(254, 24);
+            this.panel18.Size = new System.Drawing.Size(194, 24);
             this.panel18.TabIndex = 1;
             // 
             // manualCheckBox
@@ -629,7 +669,7 @@
             this.manualCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.manualCheckBox.Location = new System.Drawing.Point(20, 0);
             this.manualCheckBox.Name = "manualCheckBox";
-            this.manualCheckBox.Size = new System.Drawing.Size(234, 24);
+            this.manualCheckBox.Size = new System.Drawing.Size(174, 24);
             this.manualCheckBox.TabIndex = 0;
             this.manualCheckBox.Text = "Auto DateChange";
             this.manualCheckBox.UseVisualStyleBackColor = true;
@@ -658,6 +698,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1176, 26);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // databaseToolStripMenuItem
             // 
@@ -697,7 +738,8 @@
             this.databseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem1,
             this.disconnectToolStripMenuItem1,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.errorLogToolStripMenuItem});
             this.databseToolStripMenuItem.Name = "databseToolStripMenuItem";
             this.databseToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
             this.databseToolStripMenuItem.Text = "Database";
@@ -723,6 +765,13 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.openDatabaseSettings);
+            // 
+            // errorLogToolStripMenuItem
+            // 
+            this.errorLogToolStripMenuItem.Name = "errorLogToolStripMenuItem";
+            this.errorLogToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.errorLogToolStripMenuItem.Text = "Error Log";
+            this.errorLogToolStripMenuItem.Click += new System.EventHandler(this.errorLogToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -758,6 +807,7 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.timeControl)).EndInit();
             this.panel18.ResumeLayout(false);
             this.panel18.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -823,6 +873,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn out_valid;
         private System.Windows.Forms.DataGridViewTextBoxColumn prevout_valid;
         private System.Windows.Forms.DataGridViewTextBoxColumn roster_karyawan;
+        public System.Windows.Forms.NumericUpDown timeControl;
+        private System.Windows.Forms.ToolStripMenuItem errorLogToolStripMenuItem;
+        private System.Windows.Forms.Label errorCount;
     }
 }
 

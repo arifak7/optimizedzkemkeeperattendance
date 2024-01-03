@@ -19,6 +19,8 @@ namespace AttendanceOptimized
     
     public partial class Main : Form
     {
+        public Dictionary<DateTime, String> errorLogs;
+        ErrorLog errorlog;
         public List<Machine> Machines;
         bool dateChangeAutomated;
         Dictionary<String, List<String>> dataInTable;
@@ -49,6 +51,7 @@ namespace AttendanceOptimized
         }
         private void initVariables()
         {
+            errorLogs = new Dictionary<DateTime, string>();
             dateChangeAutomated = false;
             automated = true;
             dataInTable = new Dictionary<String, List<String>>();
@@ -180,6 +183,44 @@ namespace AttendanceOptimized
         {
             startEverything(true);
         }
+        private void startDeviceThread()
+        {
+            int loop = 0;
+            while (true)
+            {
+                try
+                {
+                    loop = refreshCheck(loop);
+                    if (dateChangeAutomated)
+                    {
+                        dateChecker();
+                    }
+                    checkDeviceConnection();
+                    updateDataTable();
+                    updateErrorCounter();
+                    Thread.Sleep(1200);
+                }
+                catch(Exception e)
+                {
+                    errorLogs.Add(DateTime.Now, e.Message + " (Main - Device Thread)");
+                    continue;
+                }
+            }
+        }
+        private void updateErrorCounter()
+        {
+            try
+            {
+                errorCount.Invoke(new Action(delegate ()
+                {
+                    errorCount.Text = errorLogs.Count.ToString();
+                }));
+            }
+            catch(Exception e)
+            {
+                errorLogs.Add(dateUsed, e.Message + " (Main - Error Counter)");
+            }
+        }
 
         private void startEverything(bool everything)
         {
@@ -216,21 +257,7 @@ namespace AttendanceOptimized
         }
 
         //runtime thread for device conn/data checker
-        private void startDeviceThread()
-        {
-            int loop = 0;
-            while (true)
-            {
-                loop = refreshCheck(loop);
-                if (dateChangeAutomated)
-                {
-                    dateChecker();
-                }
-                checkDeviceConnection();
-                updateDataTable();
-                Thread.Sleep(2000);
-            }
-        }
+       
 
         //checker for refresh data, if loop is a certain value,
         //it will erase record in machines object and clear table and dataintable checker
@@ -294,9 +321,18 @@ namespace AttendanceOptimized
         {
             foreach(Machine machine in Machines)
             {
-                foreach(Karyawan karyawan in machine.Record.Values)
+                foreach (Karyawan karyawan in machine.Record.Values)
                 {
-                    insertToKaryawanTable(karyawan);
+                    try
+                    {
+                        insertToKaryawanTable(karyawan);
+                    }
+                    catch (Exception e)
+                    {
+                        errorLogs.Add(DateTime.Now, e.Message + " (Main - UpdateDataTable)");
+                        continue;
+                    }
+                
                 }
             }
         }
@@ -336,6 +372,7 @@ namespace AttendanceOptimized
             }
             catch(Exception e)
             {
+                errorLogs.Add(DateTime.Now, e.Message + " (Main - KaryawanTable)");
                 
             }
         }
@@ -489,5 +526,19 @@ namespace AttendanceOptimized
             }
         }
 
+        private void errorLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (errorlog != null)
+            {
+                errorlog.Close();
+            }
+            errorlog = new ErrorLog(errorLogs);
+            errorlog.Show();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }

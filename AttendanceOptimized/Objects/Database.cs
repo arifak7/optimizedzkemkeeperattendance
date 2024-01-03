@@ -69,15 +69,36 @@ namespace AttendanceOptimized.Objects
             connectDatabases();
             while (true)
             {
-                Thread.Sleep(8000);
-                checkConnection();
-                recordRefresh();
-                verifyMainRecord();
-                Thread.Sleep(1500);
-                syncDatabaseDataWithMachine();
+                try
+                {
+                    checkConnection();
+                    recordRefresh();
+                    verifyMainRecord();
+                    syncDatabaseDataWithMachine();
+                    Thread.Sleep(Convert.ToInt16(main.timeControl.Value) * 1500);
+                }
+                catch (Exception e)
+                {
+
+                    main.errorLogs.Add(DateTime.Now, e.Message + " (Database - DBConnectionChecker)");
+                    continue;
+                }
             }
         }
 
+        public void initDB()
+        {
+            init();
+            connectDatabases();
+        }
+
+        public void loopDB()
+        {
+            checkConnection();
+            recordRefresh();
+            verifyMainRecord();
+            syncDatabaseDataWithMachine();
+        }
 
         private void syncDatabaseDataWithMachine()
         {
@@ -141,6 +162,7 @@ namespace AttendanceOptimized.Objects
                 }
                 catch(Exception e)
                 {
+                    main.errorLogs.Add(DateTime.Now, e.Message + " (Database - DBConnectionChecker)");
                     continue;
                 }
             }
@@ -159,6 +181,7 @@ namespace AttendanceOptimized.Objects
             }
             catch (Exception ex)
             {
+                main.errorLogs.Add(DateTime.Now, ex.Message + " (Database - DBConnectionChecker)");
                 MessageBox.Show(ex.Message);
             }
             try
@@ -167,6 +190,7 @@ namespace AttendanceOptimized.Objects
             }
             catch (Exception ex)
             {
+                main.errorLogs.Add(DateTime.Now, ex.Message + " (Database - DBConnectionChecker)");
                 MessageBox.Show(ex.Message);
             }
             main.ipaddr1.Invoke(new Action(delegate ()

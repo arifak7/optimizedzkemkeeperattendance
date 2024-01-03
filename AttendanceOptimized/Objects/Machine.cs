@@ -66,7 +66,15 @@ namespace AttendanceOptimized.Objects
                 DateTime time = new DateTime(year, month, day, hour, minute, second);
                 if (time.Date == dateUsed.Date)
                 {
-                    insertRecord(enroll, inOut, time, DeviceName);
+                    try
+                    {
+                        insertRecord(enroll, inOut, time, DeviceName);
+                    }
+                    catch (Exception e)
+                    {
+                        _Main.errorLogs.Add(DateTime.Now, e.Message + " (Machine - Read Data From Machine)");
+                        continue;
+                    }
                 }
             }
         }
@@ -137,12 +145,35 @@ namespace AttendanceOptimized.Objects
             if (isConnected()) readUserInfoFromMachine();
             while (true)
             {
-                connectDevice();
-                if (isConnected())
+                try
                 {
-                    readDataFromMachine(device);
+                    connectDevice();
+                    if (isConnected())
+                    {
+                        readDataFromMachine(device);
+                    }
                 }
-                Thread.Sleep(10000);
+                catch(Exception e)
+                {
+                    _Main.errorLogs.Add(DateTime.Now, e.Message + " (Machine - Connection Thread)");
+                    continue;
+                }
+                Thread.Sleep(Convert.ToInt16(_Main.timeControl.Value)*1000);
+            }
+        }
+        public void initDevice()
+        {
+            dateUsed = _Main.date_used.Value;
+            device = new zkemkeeper.CZKEMClass();
+            connectDevice();
+            if (isConnected()) readUserInfoFromMachine();
+        }
+        public void connectLoop()
+        {
+            connectDevice();
+            if (isConnected())
+            {
+                readDataFromMachine(device);
             }
         }
 
