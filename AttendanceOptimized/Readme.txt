@@ -1,6 +1,4 @@
-﻿!!! Arif AK !!!
-
-make sure to properly configure it to the desired bit architecture in default application pool that prioritizes 32/64 bits
+﻿make sure to properly configure it to the desired bit architecture in default application pool that prioritizes 32/64 bits
 
 x86 app on x64 pool will not run and result in unregistered dll crash (will be unable to be registered using regsvr32)
 x64 on x86 will run but will be missing data or stuck on certain task due to unknown errors, best to err on the side of caution
