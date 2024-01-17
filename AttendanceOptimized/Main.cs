@@ -30,6 +30,7 @@ namespace AttendanceOptimized
         Thread resetCheckerThread;
         DatabaseSettings databaseSettings;
         Database database;
+        Random random;
         public DateTime dateUsed;
         Dictionary<String, Color> colorRef = new Dictionary<string, Color> { { "Connected", Color.Green }, {"Disconnected",Color.Red },
             {"Trying...", Color.Blue }, {"Idle", Color.Black } };
@@ -51,6 +52,7 @@ namespace AttendanceOptimized
         }
         private void initVariables()
         {
+            random = new Random();
             errorLogs = new Dictionary<DateTime, string>();
             dateChangeAutomated = false;
             automated = true;
@@ -202,7 +204,7 @@ namespace AttendanceOptimized
                 }
                 catch(Exception e)
                 {
-                    errorLogs.Add(DateTime.Now, e.Message + " (Main - Device Thread)");
+                    addErrorLog("Device Thread display loop error");
                     continue;
                 }
             }
@@ -218,7 +220,7 @@ namespace AttendanceOptimized
             }
             catch(Exception e)
             {
-                errorLogs.Add(dateUsed, e.Message + " (Main - Error Counter)");
+                addErrorLog("Error Counter Error");
             }
         }
 
@@ -263,10 +265,17 @@ namespace AttendanceOptimized
         //it will erase record in machines object and clear table and dataintable checker
         private int refreshCheck(int loop)
         {
-            if (loop == 1000)
+            if (loop == 120)
             {
                 dateUsed = date_used.Value.Date;
-                reset();
+                if (Properties.Settings.Default.autoloop)
+                {
+                    timeControl.Invoke(new Action(delegate ()
+                    {
+                        timeControl.Value = 350;
+                    }));
+                }
+                //reset();
                 return 0;
             }
             return loop += 1;
@@ -282,6 +291,7 @@ namespace AttendanceOptimized
             if (dateUsed.Date != date_used.Value.Date)
             {
                 dateUsed = date_used.Value.Date;
+                restartProgram();
                 reset();
             }
         }
@@ -315,7 +325,26 @@ namespace AttendanceOptimized
                 }
             }
         }
+        public void addErrorLog(String message)
+        {
+            try
+            {
+                if (!errorLogs.ContainsKey(DateTime.Now))
+                {
+                    errorLogs.Add(DateTime.Now, message);
+                }
+                else
+                {
+                    errorLogs.Add(DateTime.Now + TimeSpan.FromSeconds(random.Next(1,999)), message + "(Retried)"); ;
+                }
+            }
+            catch (Exception ex)
+            {
+                Thread.Sleep(1000);
+                addErrorLog(message);
+            }
 
+        }
         //get data from main record
         private void updateDataTable()
         {
@@ -329,10 +358,9 @@ namespace AttendanceOptimized
                     }
                     catch (Exception e)
                     {
-                        errorLogs.Add(DateTime.Now, e.Message + " (Main - UpdateDataTable)");
+                        addErrorLog("Update Data Table Error");
                         continue;
-                    }
-                
+                    }                
                 }
             }
         }
@@ -350,21 +378,30 @@ namespace AttendanceOptimized
                 {
                     if (!(IN == " " && OUT == " "))
                     {
-                        if (!dataInTable.ContainsKey(karyawan.NIK))
+                        try
                         {
-                            addNewRow(karyawan, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
-                        }
-                        else
-                        {
-                            int index = findIndexInTable(karyawan.NIK);
-                            if (index >= 0)
+                            if (!dataInTable.ContainsKey(karyawan.NIK))
                             {
-                                updateRow(index, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
+
+                                addNewRow(karyawan, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
                             }
                             else
                             {
-                                addNewRow(karyawan, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
+                                int index = findIndexInTable(karyawan.NIK);
+                                if (index >= 0)
+                                {
+                                    updateRow(index, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
+                                }
+                                else
+                                {
+                                    addNewRow(karyawan, IN, OUT, displayIndex[karyawan.INValidation], displayIndex[karyawan.OUTValidation], displayIndex[karyawan.prevOUTValidation], Roster);
+                                }
                             }
+                        }
+                        catch (Exception e)
+                        {
+                            addErrorLog("Karyawan Table failed");
+                            return;
                         }
                     }
                 }));
@@ -372,28 +409,42 @@ namespace AttendanceOptimized
             }
             catch(Exception e)
             {
-                errorLogs.Add(DateTime.Now, e.Message + " (Main - KaryawanTable)");
-                
+                addErrorLog("Karyawan Table insert failure");           
             }
         }
 
         //table to update Row
         private void updateRow(int index, String IN, String OUT, String inValid, String outValid, String prevOutValid, String Roster)
         {
-            karyawan_table.Rows[index].Cells["IN_karyawan"].Value = IN;
-            karyawan_table.Rows[index].Cells["OUT_karyawan"].Value = OUT;
-            karyawan_table.Rows[index].Cells["in_valid"].Value = inValid;
-            karyawan_table.Rows[index].Cells["out_valid"].Value = outValid;
-            karyawan_table.Rows[index].Cells["prevout_valid"].Value = prevOutValid;
-            karyawan_table.Rows[index].Cells["roster_karyawan"].Value = Roster;
+            try
+            {
+                karyawan_table.Rows[index].Cells["IN_karyawan"].Value = IN;
+                karyawan_table.Rows[index].Cells["OUT_karyawan"].Value = OUT;
+                karyawan_table.Rows[index].Cells["in_valid"].Value = inValid;
+                karyawan_table.Rows[index].Cells["out_valid"].Value = outValid;
+                karyawan_table.Rows[index].Cells["prevout_valid"].Value = prevOutValid;
+                karyawan_table.Rows[index].Cells["roster_karyawan"].Value = Roster;
+
+            }
+            catch(Exception ex)
+            {
+                addErrorLog("Table Update Failure");
+            }
         }
 
         //table add new row
         private void addNewRow(Karyawan karyawan, String IN, String OUT, String inValid, String outValid, String prevOutValid, String Roster)
         {
-            karyawan_table.Rows.Add(karyawan.NIK, karyawan.Nama, IN, OUT, karyawan.Device, inValid, outValid, prevOutValid, Roster);
-            List<String> dataTime = new List<String>() { IN, OUT };
-            dataInTable.Add(karyawan.NIK, dataTime);
+            try
+            {
+                karyawan_table.Rows.Add(karyawan.NIK, karyawan.Nama, IN, OUT, karyawan.Device, inValid, outValid, prevOutValid, Roster);
+                List<String> dataTime = new List<String>() { IN, OUT };
+                dataInTable.Add(karyawan.NIK, dataTime);
+            }
+            catch(Exception ex)
+            {
+                addErrorLog("New Row Failure");
+            }
         }
 
         //clear karyawan table and refresh data
@@ -419,12 +470,22 @@ namespace AttendanceOptimized
         //check index manually because its sortable
         private int findIndexInTable(String NIK)
         {
-            for (int i= 0; i<karyawan_table.RowCount; i++)
+            try
             {
-                if (karyawan_table.Rows[i].Cells["NIK_karyawan"].Value.ToString().Equals(NIK))
+                if (karyawan_table.RowCount > 0)
                 {
-                    return i;
+                    for (int i = 0; i < karyawan_table.RowCount; i++)
+                    {
+                        if (karyawan_table.Rows[i].Cells["NIK_karyawan"].Value.ToString().Equals(NIK))
+                        {
+                            return i;
+                        }
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                return -1;
             }
             return -1;
         }
@@ -539,6 +600,16 @@ namespace AttendanceOptimized
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void restartDevice(object sender, EventArgs e)
+        {
+            restartProgram();
+        }
+        public void restartProgram()
+        {
+            Application.Restart();
+            Environment.Exit(0);
         }
     }
 }

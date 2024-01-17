@@ -81,6 +81,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.errorCount = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.timeControl = new System.Windows.Forms.NumericUpDown();
             this.panel18 = new System.Windows.Forms.Panel();
             this.manualCheckBox = new System.Windows.Forms.CheckBox();
@@ -95,6 +97,7 @@
             this.disconnectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.errorLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restartApplicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -607,26 +610,51 @@
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.panel3.Controls.Add(this.errorCount);
+            this.panel3.Controls.Add(this.label7);
+            this.panel3.Controls.Add(this.label4);
             this.panel3.Controls.Add(this.timeControl);
             this.panel3.Controls.Add(this.panel18);
             this.panel3.Controls.Add(this.date_used);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 26);
+            this.panel3.Location = new System.Drawing.Point(0, 28);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(10);
-            this.panel3.Size = new System.Drawing.Size(1176, 44);
+            this.panel3.Size = new System.Drawing.Size(1176, 42);
             this.panel3.TabIndex = 1;
             // 
             // errorCount
             // 
             this.errorCount.Dock = System.Windows.Forms.DockStyle.Left;
             this.errorCount.ForeColor = System.Drawing.Color.Red;
-            this.errorCount.Location = new System.Drawing.Point(465, 10);
+            this.errorCount.Location = new System.Drawing.Point(637, 10);
             this.errorCount.Name = "errorCount";
-            this.errorCount.Size = new System.Drawing.Size(88, 24);
-            this.errorCount.TabIndex = 3;
+            this.errorCount.Size = new System.Drawing.Size(88, 22);
+            this.errorCount.TabIndex = 7;
             this.errorCount.Text = "0";
-            this.errorCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.errorCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label7
+            // 
+            this.label7.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label7.ForeColor = System.Drawing.Color.Red;
+            this.label7.Location = new System.Drawing.Point(517, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(120, 22);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Error Count:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label4.Location = new System.Drawing.Point(429, 10);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 0, 0, 4);
+            this.label4.Size = new System.Drawing.Size(88, 22);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "s/Loop";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timeControl
             // 
@@ -643,10 +671,10 @@
             0,
             0});
             this.timeControl.Name = "timeControl";
-            this.timeControl.Size = new System.Drawing.Size(97, 23);
+            this.timeControl.Size = new System.Drawing.Size(61, 23);
             this.timeControl.TabIndex = 2;
             this.timeControl.Value = new decimal(new int[] {
-            10,
+            1,
             0,
             0,
             0});
@@ -658,7 +686,7 @@
             this.panel18.Location = new System.Drawing.Point(174, 10);
             this.panel18.Name = "panel18";
             this.panel18.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.panel18.Size = new System.Drawing.Size(194, 24);
+            this.panel18.Size = new System.Drawing.Size(194, 22);
             this.panel18.TabIndex = 1;
             // 
             // manualCheckBox
@@ -669,7 +697,7 @@
             this.manualCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.manualCheckBox.Location = new System.Drawing.Point(20, 0);
             this.manualCheckBox.Name = "manualCheckBox";
-            this.manualCheckBox.Size = new System.Drawing.Size(174, 24);
+            this.manualCheckBox.Size = new System.Drawing.Size(174, 22);
             this.manualCheckBox.TabIndex = 0;
             this.manualCheckBox.Text = "Auto DateChange";
             this.manualCheckBox.UseVisualStyleBackColor = true;
@@ -695,7 +723,7 @@
             this.databseToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1176, 26);
+            this.menuStrip1.Size = new System.Drawing.Size(1176, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -707,13 +735,13 @@
             this.disconnectToolStripMenuItem,
             this.clearDeviceToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
-            this.databaseToolStripMenuItem.Size = new System.Drawing.Size(70, 22);
+            this.databaseToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
             this.databaseToolStripMenuItem.Text = "Device";
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.Connect_device);
             // 
@@ -721,7 +749,7 @@
             // 
             this.disconnectToolStripMenuItem.Enabled = false;
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.Disconnect_device);
             // 
@@ -729,7 +757,7 @@
             // 
             this.clearDeviceToolStripMenuItem.Enabled = false;
             this.clearDeviceToolStripMenuItem.Name = "clearDeviceToolStripMenuItem";
-            this.clearDeviceToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.clearDeviceToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.clearDeviceToolStripMenuItem.Text = "Clear Device";
             this.clearDeviceToolStripMenuItem.Click += new System.EventHandler(this.clearSelectedDevice);
             // 
@@ -739,16 +767,17 @@
             this.connectToolStripMenuItem1,
             this.disconnectToolStripMenuItem1,
             this.settingsToolStripMenuItem,
-            this.errorLogToolStripMenuItem});
+            this.errorLogToolStripMenuItem,
+            this.restartApplicationToolStripMenuItem});
             this.databseToolStripMenuItem.Name = "databseToolStripMenuItem";
-            this.databseToolStripMenuItem.Size = new System.Drawing.Size(86, 22);
+            this.databseToolStripMenuItem.Size = new System.Drawing.Size(86, 24);
             this.databseToolStripMenuItem.Text = "Database";
             // 
             // connectToolStripMenuItem1
             // 
             this.connectToolStripMenuItem1.Enabled = false;
             this.connectToolStripMenuItem1.Name = "connectToolStripMenuItem1";
-            this.connectToolStripMenuItem1.Size = new System.Drawing.Size(170, 26);
+            this.connectToolStripMenuItem1.Size = new System.Drawing.Size(242, 26);
             this.connectToolStripMenuItem1.Text = "Connect";
             this.connectToolStripMenuItem1.Click += new System.EventHandler(this.connectDatabase);
             // 
@@ -756,22 +785,29 @@
             // 
             this.disconnectToolStripMenuItem1.Enabled = false;
             this.disconnectToolStripMenuItem1.Name = "disconnectToolStripMenuItem1";
-            this.disconnectToolStripMenuItem1.Size = new System.Drawing.Size(170, 26);
+            this.disconnectToolStripMenuItem1.Size = new System.Drawing.Size(242, 26);
             this.disconnectToolStripMenuItem1.Text = "Disconnect";
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.openDatabaseSettings);
             // 
             // errorLogToolStripMenuItem
             // 
             this.errorLogToolStripMenuItem.Name = "errorLogToolStripMenuItem";
-            this.errorLogToolStripMenuItem.Size = new System.Drawing.Size(170, 26);
+            this.errorLogToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
             this.errorLogToolStripMenuItem.Text = "Error Log";
             this.errorLogToolStripMenuItem.Click += new System.EventHandler(this.errorLogToolStripMenuItem_Click);
+            // 
+            // restartApplicationToolStripMenuItem
+            // 
+            this.restartApplicationToolStripMenuItem.Name = "restartApplicationToolStripMenuItem";
+            this.restartApplicationToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.restartApplicationToolStripMenuItem.Text = "Restart Application";
+            this.restartApplicationToolStripMenuItem.Click += new System.EventHandler(this.restartDevice);
             // 
             // Main
             // 
@@ -876,6 +912,9 @@
         public System.Windows.Forms.NumericUpDown timeControl;
         private System.Windows.Forms.ToolStripMenuItem errorLogToolStripMenuItem;
         private System.Windows.Forms.Label errorCount;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolStripMenuItem restartApplicationToolStripMenuItem;
     }
 }
 

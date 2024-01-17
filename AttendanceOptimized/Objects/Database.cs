@@ -79,8 +79,7 @@ namespace AttendanceOptimized.Objects
                 }
                 catch (Exception e)
                 {
-
-                    main.errorLogs.Add(DateTime.Now, e.Message + " (Database - DBConnectionChecker)");
+                    main.addErrorLog("Database Timeout");
                     continue;
                 }
             }
@@ -103,6 +102,14 @@ namespace AttendanceOptimized.Objects
         private void syncDatabaseDataWithMachine()
         {
             List<int> validForDB = new List<int>() { 1, 2 };
+            try
+            {
+
+            }
+            catch(Exception ex)
+            {
+
+            }
             foreach (Machine machine in main.Machines)
             {
                 foreach(Karyawan karyawan in machine.Record.Values.ToList())
@@ -162,7 +169,7 @@ namespace AttendanceOptimized.Objects
                 }
                 catch(Exception e)
                 {
-                    main.errorLogs.Add(DateTime.Now, e.Message + " (Database - DBConnectionChecker)");
+                    main.addErrorLog("Database Connection Error");
                     continue;
                 }
             }
@@ -181,8 +188,7 @@ namespace AttendanceOptimized.Objects
             }
             catch (Exception ex)
             {
-                main.errorLogs.Add(DateTime.Now, ex.Message + " (Database - DBConnectionChecker)");
-                MessageBox.Show(ex.Message);
+                main.addErrorLog("Connection open error");
             }
             try
             {
@@ -190,7 +196,7 @@ namespace AttendanceOptimized.Objects
             }
             catch (Exception ex)
             {
-                main.errorLogs.Add(DateTime.Now, ex.Message + " (Database - DBConnectionChecker)");
+                main.addErrorLog("Connection open error");
                 MessageBox.Show(ex.Message);
             }
             main.ipaddr1.Invoke(new Action(delegate ()
@@ -205,14 +211,23 @@ namespace AttendanceOptimized.Objects
 
         private void checkConnection()
         {
-            main.db1status.Invoke(new Action(delegate ()
+            try
             {
-                main.db1status.Text = connection.refreshConnection();
-            }));
-            main.db2status.Invoke(new Action(delegate ()
+
+                main.db1status.Invoke(new Action(delegate ()
+                {
+                    main.db1status.Text = connection.refreshConnection();
+                }));
+                main.db2status.Invoke(new Action(delegate ()
+                {
+                    main.db2status.Text = newDB.refreshConnection();
+                }));
+            }
+            catch(Exception ex)
             {
-                main.db2status.Text = newDB.refreshConnection();
-            }));
+                main.addErrorLog("DB String CONN update Error");
+                return;
+            }
         }
     }
 

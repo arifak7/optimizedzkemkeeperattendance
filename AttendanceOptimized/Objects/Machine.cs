@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Attendance;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,7 +59,14 @@ namespace AttendanceOptimized.Objects
         }
         private void readDataFromMachine(zkemkeeper.CZKEM device)
         {
-            device.ReadGeneralLogData(1);
+            try
+            {
+                device.ReadGeneralLogData(1);
+            }
+            catch(Exception ex)
+            {
+                _Main.addErrorLog("Machine " + DeviceName + " init Read failed");
+            }
             
             String enroll = "";
             int verify = 0; int inOut = 0; int year = 0; int month = 0; int workCode = 0;
@@ -72,7 +82,7 @@ namespace AttendanceOptimized.Objects
                     }
                     catch (Exception e)
                     {
-                        _Main.errorLogs.Add(DateTime.Now, e.Message + " (Machine - Read Data From Machine)");
+                        _Main.addErrorLog("Machine " + DeviceName + " failed to insert Record");
                         continue;
                     }
                 }
@@ -85,13 +95,20 @@ namespace AttendanceOptimized.Objects
         //Shortened-functions / Record Interactions (Optimize this)
         private void insertRecord(String enroll, int inOut, DateTime time, String DevName)
         {
-            if (!Record.ContainsKey(enroll))
+            try
             {
-                String nama = (nameRef.ContainsKey(enroll)) ? nameRef[enroll] : " "; 
-                Record.Add(enroll, new Karyawan(enroll, nama));
+                if (!Record.ContainsKey(enroll))
+                {
+                    String nama = (nameRef.ContainsKey(enroll)) ? nameRef[enroll] : " ";
+                    Record.Add(enroll, new Karyawan(enroll, nama));
+                }
+                String entryType = (entryValid.Contains(inOut)) ? "IN" : "OUT";
+                Record[enroll].AddTime(time, entryType, DeviceName);
+            }           
+            catch(Exception e)
+            {
+                _Main.addErrorLog("Machine " + DeviceName + " failed to insert Record");
             }
-            String entryType = (entryValid.Contains(inOut)) ? "IN" : "OUT";            
-            Record[enroll].AddTime(time, entryType, DeviceName);            
         }
 
         //Thread Init
@@ -115,11 +132,21 @@ namespace AttendanceOptimized.Objects
         {
             Record.Clear();
         }
+
+        [HandleProcessCorruptedStateExceptions]
         private void connectDevice()
         {
             Status = "Trying...";
-            bool connection = device.Connect_Net(IPAddress, 4370);
-            Status = (connection)? "Connected": "Disconnected";
+            bool connection = false;
+            try
+            {
+                connection = device.Connect_Net(IPAddress, 4370);
+            }
+            catch(AccessViolationException ex)
+            {
+                _Main.restartProgram();
+            }
+            Status = (connection) ? "Connected" : "Disconnected";
         }
 
         private bool isConnected()
@@ -155,7 +182,7 @@ namespace AttendanceOptimized.Objects
                 }
                 catch(Exception e)
                 {
-                    _Main.errorLogs.Add(DateTime.Now, e.Message + " (Machine - Connection Thread)");
+                    _Main.addErrorLog(DeviceName+" Connection failed");
                     continue;
                 }
                 Thread.Sleep(Convert.ToInt16(_Main.timeControl.Value)*1000);

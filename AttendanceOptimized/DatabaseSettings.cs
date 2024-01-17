@@ -23,6 +23,7 @@ namespace AttendanceOptimized
             connectionString1Box.Text = Properties.Settings.Default.db1connstring;
             connectionString2Box.Text = Properties.Settings.Default.db2connstring;
             autostartCheck.Checked = Properties.Settings.Default.autostart;
+            autoloopCheck.Checked = Properties.Settings.Default.autoloop;
         }
 
         private void commitdb1_Click(object sender, EventArgs e)
@@ -42,6 +43,12 @@ namespace AttendanceOptimized
         private void manualCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.autostart = autostartCheck.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void autoloopCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.autoloop = autoloopCheck.Checked;
             Properties.Settings.Default.Save();
         }
     }

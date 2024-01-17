@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="130992">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="133552">
       <assemblyIdentity name="AttendanceOptimized" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>DsipyragFoW7YwQUrNv4it37jUdmJ9t/3lcmRqDKfjA=</dsig:DigestValue>
+        <dsig:DigestValue>YJaXZJ/ZcBoRO6Q6k8BJ48MJi+nEqqEPCdcLJhOjB9I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -90,13 +90,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="AttendanceOptimized.exe.config" size="1998">
+  <file name="AttendanceOptimized.exe.config" size="2120">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>eGT6SnAvcr9TeoYBlaachI1rEkJXuTqvOT2h+EsxLoM=</dsig:DigestValue>
+      <dsig:DigestValue>d1JsYaQoLdUz+rR/3SyhWXgtD0sXQppLhsi+3ibhCTY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="fingerprint.ico" size="4286">
