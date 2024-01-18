@@ -35,9 +35,9 @@ namespace Attendance
         public void setConnString()
         {
             String dbServer = @"10.2.168.119";
-            String username = "TALMRB";
-            String password = "Talentamrb21";
-            String initCatalog = "TALHRD";
+            String username = "DBUNAME";
+            String password = "DBPASSWORD";
+            String initCatalog = "DBCATALOG";
             setConnString(dbServer, username, password, initCatalog);  
         }
         public void setConnString(String dbServer, String username, String password, String initCatalog)
