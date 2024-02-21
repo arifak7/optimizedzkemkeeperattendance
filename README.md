@@ -5,3 +5,5 @@ x86 app on x64 pool will not run and result in unregistered dll crash (will be u
 x64 on x86 will run but will be missing data or stuck on certain task due to unknown errors, best to err on the side of caution
 
 .NET 4.6.1 works best, .NET CORE 6.0 for some reason also resulted in inconsistent data receiving (further informations needed)
+
+Ongoing problem solved, running it in x86 bit is more stable, however if you encounter a CLSID error, proceed to install the official Zkemkeeper solution app that came prepackaged (or look up online), it will register all the necessary dlls (as i've yet to figure out how to do so)
