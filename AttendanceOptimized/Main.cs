@@ -24,8 +24,8 @@ namespace AttendanceOptimized
         public List<Machine> Machines;
         bool dateChangeAutomated;
         Dictionary<String, List<String>> dataInTable;
-        List<String> displayIndex = new List<String>() {"Null", "Not in DB", "New Data", "Inputting", "Valid" };
-        Dictionary<String, Color> colorMapping = new Dictionary<string, Color> { { "Null", Color.Black }, { "Not in DB", Color.Red }, { "New Data", Color.Red }, { "Inputting", Color.Blue }, { "Valid", Color.Green } };
+        List<String> displayIndex = new List<String>() {"Null", "Not in DB", "New Data", "Inputting", "Valid", "Not Prev" };
+        Dictionary<String, Color> colorMapping = new Dictionary<string, Color> { { "Null", Color.Black }, { "Not in DB", Color.Red }, { "New Data", Color.Red }, { "Inputting", Color.Blue }, { "Valid", Color.Green }, { "Not Prev", Color.Green } };
         Thread dataThread;
         Thread resetCheckerThread;
         DatabaseSettings databaseSettings;
@@ -291,16 +291,15 @@ namespace AttendanceOptimized
             if (dateUsed.Date != date_used.Value.Date)
             {
                 dateUsed = date_used.Value.Date;
-                restartProgram();
                 reset();
             }
         }
 
-        private void reset()
+        public void reset()
         {
             
             foreach(Machine machine in Machines)
-            {
+            {               
                 machine.stopConnection();
                 machine.startConnection();
             }
@@ -311,7 +310,6 @@ namespace AttendanceOptimized
             {
                 karyawan_table.Rows.Clear();
             }));
-
         }
 
         //functions-calls shorten
@@ -373,7 +371,7 @@ namespace AttendanceOptimized
             {
                 String Roster = (karyawan.Roster != null) ? karyawan.Roster : " ";
                 String IN = (karyawan.inTime != DateTime.MaxValue) ? karyawan.inTime.ToString("HH:mm") : " ";
-                String OUT = (karyawan.outTime != DateTime.MinValue) ? karyawan.outTime.ToString("HH:mm") : (karyawan.prevOutTime != DateTime.MinValue) ? karyawan.prevOutTime.ToString("HH:mm") : " ";
+                String OUT = (karyawan.outTime != DateTime.MinValue) ? karyawan.outTime.ToString("HH:mm") :" ";
                 karyawan_table.Invoke(new Action(delegate ()
                 {
                     if (!(IN == " " && OUT == " "))

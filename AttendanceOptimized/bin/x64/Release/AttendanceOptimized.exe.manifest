@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YJaXZJ/ZcBoRO6Q6k8BJ48MJi+nEqqEPCdcLJhOjB9I=</dsig:DigestValue>
+        <dsig:DigestValue>9pdKHCo5bCiWGYUANkfzpDoQN286FVh8dgvwaeQQRi8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -108,13 +108,13 @@
       <dsig:DigestValue>4Reuu0GsyUpP4v+qK4bZCxgOmvbmvIGB1Hx6oB6DhDY=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Readme.txt" size="526">
+  <file name="Readme.txt" size="509">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>iz10ARiw2DggkWvtF1G1m8gDfSaWVJioFwQvZifviEc=</dsig:DigestValue>
+      <dsig:DigestValue>QhRiWjRrxhxyYrQCw3SCsb/sSHiyduckTCjN5QeP/hc=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="134576">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AttendanceOptimized.exe" size="136624">
       <assemblyIdentity name="AttendanceOptimized" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YrY3hRAjRGhbGkQvadoa/Vpyt+yT94A8TcpEK1/bFvU=</dsig:DigestValue>
+        <dsig:DigestValue>c8lMjFVOHxcj24RRmlSekV5jE3bdCphOqpUnNmq4uyw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -108,13 +108,13 @@
       <dsig:DigestValue>4Reuu0GsyUpP4v+qK4bZCxgOmvbmvIGB1Hx6oB6DhDY=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Readme.txt" size="526">
+  <file name="Readme.txt" size="509">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>iz10ARiw2DggkWvtF1G1m8gDfSaWVJioFwQvZifviEc=</dsig:DigestValue>
+      <dsig:DigestValue>QhRiWjRrxhxyYrQCw3SCsb/sSHiyduckTCjN5QeP/hc=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

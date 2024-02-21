@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AttendanceOptimized.Objects
 {
@@ -11,6 +12,8 @@ namespace AttendanceOptimized.Objects
         public String NIK;
         public String Nama;
         public String Device;
+        public int retriedIN;
+        public int retriedOUT;
 
         public DateTime inTime;
         public DateTime outTime;
@@ -34,6 +37,8 @@ namespace AttendanceOptimized.Objects
             INValidation = 0;
             OUTValidation = 0;
             prevOUTValidation = 0;
+            retriedIN = 0;
+            retriedOUT = 0;
             inTime = DateTime.MaxValue;
             outTime = DateTime.MinValue;
             prevOutTime = DateTime.MinValue;
@@ -43,6 +48,7 @@ namespace AttendanceOptimized.Objects
         {
             this.Device = device;
             recordTag = (recordTag=="OUT" && time.TimeOfDay < TimeSpan.FromHours(9))? "PREVOUT" : recordTag;
+           
             switch (recordTag)
             {
                 case "IN":

@@ -25,7 +25,7 @@ namespace AttendanceOptimized.Model
             {
                 newDB.open();
                 DateTime dayBefore = dateUsed - TimeSpan.FromDays(1);
-                String query = "EXEC getAbsensiRosterData @startDate = '" + dayBefore.ToString("MM/dd/yyyy") + "', @endDate='" + dateUsed.ToString("MM/dd/yyyy") + "'";
+                String query = "EXEC getAbsensiPerRoster @startDate = '" + dayBefore.ToString("MM/dd/yyyy") + "', @endDate='" + dateUsed.ToString("MM/dd/yyyy") + "'";
                 //MessageBox.Show(query);
                 SqlDataReader reader = newDB.Reader(query);
                 while (reader.Read())
@@ -39,9 +39,9 @@ namespace AttendanceOptimized.Model
                     {
                         records.Add(NIK, new DatabaseRecord());
                     }
-                    records[NIK].addIN(date.Date, IN, dateUsed);
-                    records[NIK].addOUT(date.Date, OUT, dateUsed);
-                    records[NIK].AddRoster(date.Date, Roster, dateUsed);
+                    records[NIK].addIN(date, IN, dateUsed);
+                    records[NIK].addOUT(date, OUT, dateUsed);
+                    records[NIK].AddRoster(date, Roster, dateUsed);
                 }
                 reader.Close();
                 return records;
@@ -59,12 +59,21 @@ namespace AttendanceOptimized.Model
             try
             {
                 String IN = (entryType == "IN") ? "'" + karyawan.inTime.ToString("HH:mm") + "'" : "NULL";
-                String OUT = (entryType == "OUT") ? "'" + karyawan.outTime.ToString("HH:mm") + "'" : "NULL";
+                String OUT = "NULL"; 
                 DateTime dateForDB = (entryType == "IN") ? karyawan.inTime : (entryType == "OUT") ? karyawan.outTime : (entryType == "PREVOUT") ? karyawan.prevOutTime : DateTime.MaxValue;
-                IN = (entryType == "PREVOUT") ? "NULL" : IN;
+
+                if (entryType == "OUT")
+                {
+                    OUT = (karyawan.outTime != DateTime.MinValue) ? $"'{karyawan.outTime.ToString("HH:mm")}'" : $"'{karyawan.prevOutTime.ToString("HH:mm")}'";
+                    dateForDB = (dateForDB==DateTime.MinValue)? karyawan.prevOutTime : dateForDB;
+                }
+               IN = (entryType == "PREVOUT") ? "NULL" : IN;
                 OUT = (entryType == "PREVOUT") ? "'" + karyawan.prevOutTime.ToString("HH:mm") + "'" : OUT;
                 String Query = "EXEC InsertAbsensiByType @NIK = '" + karyawan.NIK + "', @Tanggal = '" + dateForDB.Date.ToString("MM/dd/yyy") + "', @IN= " + IN + ", @OUT= " + OUT + " , @KodeST = '" + Site + "', @KodeABS = '" + KodeABS + "', @DataEntry = '" + entryType + "'";
-                //MessageBox.Show(Query);
+                if (entryType == "OUT")
+                {
+                    //MessageBox.Show(OUT);
+                }
                 conn.executeQuery(Query);
             }
             catch(Exception ex)

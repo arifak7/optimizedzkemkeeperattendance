@@ -1,11 +1,8 @@
 ﻿using Attendance;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AttendanceOptimized.Objects
@@ -137,9 +134,117 @@ namespace AttendanceOptimized.Objects
         {
             foreach(Machine machine in main.Machines)
             {
-                checkMachineRecordinDB(machine);
+                crossRefrenceMachine(machine);
             }
 
+        }
+
+        private void crossRefrenceMachine(Machine machine)
+        {
+            foreach(Karyawan karyawan in machine.Record.Values.ToList())
+            {
+                String NIK = karyawan.NIK;
+                if (!DBRecord.ContainsKey(NIK))
+                {
+                    continue;
+                }
+                karyawan.prevOUTValidation = validatePrevOut(karyawan, NIK);
+                karyawan.OUTValidation = validateOUT(karyawan, NIK);
+                karyawan.INValidation = validateIN(karyawan, NIK);
+            }
+        }
+        private int validateOUT(Karyawan karyawan, String NIK)
+        {
+            DatabaseRecord karyawanDB = DBRecord[NIK];
+            int validation = 0;
+            if (karyawanDB.todayOUT == String.Empty  )
+            {
+                if(karyawan.outTime != DateTime.MinValue)
+                {
+                    return 1;
+                }
+                else if(karyawan.prevOUTValidation == 5 && karyawan.prevOutTime!=DateTime.MinValue)
+                {
+                    karyawan.outTime = karyawan.prevOutTime;
+                    return 1;
+                }
+            }
+            else
+            {
+                validation = (replaceTimeFormat(karyawanDB.todayOUT) !=
+                    karyawan.outTime.ToString("HH:mm") && karyawan.retriedOUT < 5) ? 2 : 4;
+                if (validation == 2) karyawan.retriedOUT++;
+            }
+            return validation;
+        }
+        private int validateIN(Karyawan karyawan, String NIK)
+        {
+            DatabaseRecord karyawanDB = DBRecord[NIK];
+            int validation = 0;
+            if (karyawanDB.todayIN == String.Empty )
+            {
+                if (karyawan.inTime != DateTime.MaxValue)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                validation = (replaceTimeFormat(karyawanDB.todayIN) !=
+                    karyawan.inTime.ToString("HH:mm") && karyawan.retriedIN < 5) ? 2 : 4;
+                if (validation == 2) karyawan.retriedIN++;
+            }
+
+            return validation;
+        }
+        private String replaceTimeFormat(String time)
+        {
+            return time.Replace(".", ":");
+        }
+
+        private int validatePrevOut(Karyawan karyawan, String NIK)
+        {
+            DatabaseRecord karyawanDB = DBRecord[NIK];
+            int validation = 0;
+            if(karyawanDB.yesterdayOUT != String.Empty)
+            {
+                return 4;
+            }
+            else 
+            {
+                validation = (karyawan.prevOutTime != DateTime.MinValue) ? 1 : 0;
+                if (validation == 1)
+                {
+                    validation = (validShisft2.Contains(karyawan.prevRoster) 
+                        || getHour(karyawanDB.yesterdayIN) > 16) ? 1 : 5;
+                }
+            }
+            if (karyawan.prevOutTime.ToString("HH:mm") == replaceTimeFormat(karyawanDB.yesterdayOUT))
+            {
+                validation = 4;
+            }
+
+            return validation;
+        }
+
+        private int getHour(String hour)
+        {
+            if (hour == String.Empty) return 0;
+            try
+            {
+                String[] delimiters = { ":", "." };
+                return Convert
+                    .ToInt32(hour
+                    .Split(delimiters, StringSplitOptions.RemoveEmptyEntries)[0]);
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
 
         private void checkMachineRecordinDB(Machine machine)
@@ -151,15 +256,62 @@ namespace AttendanceOptimized.Objects
                     String NIK = karyawan.NIK;
                     if (DBRecord.ContainsKey(NIK))
                     {
+                        int prevInHour = 0;
+                      
                         karyawan.Roster = DBRecord[NIK].todayRoster;
                         karyawan.prevRoster = DBRecord[NIK].yesterdayRoster;
-                        karyawan.INValidation = (DBRecord[NIK].todayIN == karyawan.inTime.ToString("HH:mm")) ? 4 : (DBRecord[NIK].todayIN != String.Empty && karyawan.inTime != DateTime.MaxValue) ? 2 : (karyawan.inTime == DateTime.MaxValue) ? 0 : 1;
-                        karyawan.OUTValidation = (DBRecord[NIK].todayOUT == karyawan.outTime.ToString("HH:mm")) ? 4 : (DBRecord[NIK].todayOUT != String.Empty && karyawan.outTime != DateTime.MinValue) ? 2 : (karyawan.outTime == DateTime.MinValue) ? 0 : 1;
-                        karyawan.prevOUTValidation = ((DBRecord[NIK].yesterdayOUT != String.Empty && validShisft2.Contains(karyawan.prevRoster)) || !validShisft2.Contains(karyawan.prevRoster)) ? 4 : (DBRecord[NIK].yesterdayOUT != String.Empty && karyawan.prevOutTime != DateTime.MinValue && validShisft2.Contains(karyawan.prevRoster)) ? 2 : (karyawan.prevOutTime == DateTime.MinValue) ? 0 : 1;
+                        karyawan.INValidation = (DBRecord[NIK].todayIN == karyawan.inTime.ToString("HH:mm")) ? 4
+                            : (DBRecord[NIK].todayIN != String.Empty && karyawan.inTime != DateTime.MaxValue) ? 2
+                            : (karyawan.inTime == DateTime.MaxValue) ? 0 : 1;
+                        karyawan.prevOUTValidation =
+                            (DBRecord[NIK].yesterdayOUT != String.Empty) ? 4 :
+                            /*
+                            (DBRecord[NIK].yesterdayOUT != String.Empty && 
+                            karyawan.prevOutTime != DateTime.MinValue &&
+                            karyawan.prevOutTime.ToString("HH:mm")!= DBRecord[NIK].yesterdayOUT &&
+                            validShisft2.Contains(karyawan.prevRoster)) ? 2 :
+                            */
+                            (DBRecord[NIK].yesterdayIN != String.Empty &&
+                            DBRecord[NIK].yesterdayOUT == String.Empty &&
+                            karyawan.prevOutTime != DateTime.MinValue &&
+                            (karyawan.prevOutTime.ToString("HH:mm") != DBRecord[NIK].yesterdayOUT ||
+                            karyawan.prevOutTime.ToString("HH.mm") != DBRecord[NIK].yesterdayOUT) &&
+                            prevInHour > 15
+                            ) ? 2 :
+                            (DBRecord[NIK].yesterdayOUT == String.Empty &&
+                            karyawan.prevOutTime != DateTime.MinValue &&
+                            (karyawan.prevOutTime.ToString("HH:mm") != DBRecord[NIK].yesterdayOUT ||
+                            karyawan.prevOutTime.ToString("HH.mm") != DBRecord[NIK].yesterdayOUT) &&
+                            validShisft2.Contains(karyawan.prevRoster)
+                            ) ? 2 :
+                            (karyawan.prevOutTime == DateTime.MinValue) ? 0 : 5;
+                        if (karyawan.prevOUTValidation != 5)
+                        {
+                            karyawan.OUTValidation = (DBRecord[NIK].todayOUT == karyawan.outTime.ToString("HH:mm")) ? 4
+                            : (DBRecord[NIK].todayOUT != String.Empty && karyawan.outTime != DateTime.MinValue) ? 2
+                            : (karyawan.outTime == DateTime.MinValue) ? 0 : 1;
+                        }
+                        else
+                        {
+                            karyawan.OUTValidation = (karyawan.OUTValidation == 0) ? 2 : karyawan.OUTValidation;
+                        }
+                        if (karyawan.OUTValidation==3 )
+                        {
+                            karyawan.OUTValidation = (DBRecord[NIK].todayOUT != String.Empty) ? 4 : karyawan.OUTValidation;
+                        }
+                        if (karyawan.INValidation == 3)
+                        {
+                            karyawan.INValidation = (DBRecord[NIK].todayOUT != String.Empty) ? 4 : karyawan.INValidation;
+                        }
+                        if (karyawan.prevOUTValidation == 3)
+                        {
+                            karyawan.prevOUTValidation = (DBRecord[NIK].yesterdayOUT != String.Empty) ? 4 : karyawan.prevOUTValidation;
+                        }
                         /*if(karyawan.INValidation == 2)
-                            {
-                                MessageBox.Show(karyawan.NIK + "(" + karyawan.inTime.ToString() + karyawan.outTime.ToString() + karyawan.prevOutTime.ToString()+")" + DBRecord[NIK].todayIN + DBRecord[NIK].todayOUT + DBRecord[NIK].yesterdayIN + DBRecord[NIK].yesterdayOUT);
-                            }*/
+                          {
+                              MessageBox.Show(karyawan.NIK + "(" + karyawan.inTime.ToString() + karyawan.outTime.ToString() + karyawan.prevOutTime.ToString()+")" + DBRecord[NIK].todayIN + DBRecord[NIK].todayOUT + DBRecord[NIK].yesterdayIN + DBRecord[NIK].yesterdayOUT);
+                          }*/
+                        // if (karyawan.prevOUTValidation == 2) MessageBox.Show(NIK+"|"+DBRecord[NIK].yesterdayIN +"|"+ DBRecord[NIK].yesterdayOUT +"|"+ prevInHour+"|"+ DBRecord[NIK].yesterdayRoster);
                     }
                     else
                     {

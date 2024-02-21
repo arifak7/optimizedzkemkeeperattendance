@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel12 = new System.Windows.Forms.Panel();
+            this.autoloopCheck = new System.Windows.Forms.CheckBox();
             this.panel11 = new System.Windows.Forms.Panel();
             this.autostartCheck = new System.Windows.Forms.CheckBox();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -49,9 +51,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panel12 = new System.Windows.Forms.Panel();
-            this.autoloopCheck = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
+            this.panel12.SuspendLayout();
             this.panel11.SuspendLayout();
             this.panel9.SuspendLayout();
             this.panel10.SuspendLayout();
@@ -61,7 +62,6 @@
             this.panel6.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel12.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -79,6 +79,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(396, 318);
             this.panel1.TabIndex = 0;
+            // 
+            // panel12
+            // 
+            this.panel12.Controls.Add(this.autoloopCheck);
+            this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel12.Location = new System.Drawing.Point(0, 255);
+            this.panel12.Name = "panel12";
+            this.panel12.Padding = new System.Windows.Forms.Padding(10);
+            this.panel12.Size = new System.Drawing.Size(396, 43);
+            this.panel12.TabIndex = 7;
+            // 
+            // autoloopCheck
+            // 
+            this.autoloopCheck.AutoSize = true;
+            this.autoloopCheck.Checked = true;
+            this.autoloopCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoloopCheck.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.autoloopCheck.Location = new System.Drawing.Point(10, 10);
+            this.autoloopCheck.Name = "autoloopCheck";
+            this.autoloopCheck.Size = new System.Drawing.Size(376, 23);
+            this.autoloopCheck.TabIndex = 1;
+            this.autoloopCheck.Text = "Loop Auto Change";
+            this.autoloopCheck.UseVisualStyleBackColor = true;
+            this.autoloopCheck.CheckedChanged += new System.EventHandler(this.autoloopCheck_CheckedChanged);
             // 
             // panel11
             // 
@@ -296,30 +320,6 @@
             this.panel2.Size = new System.Drawing.Size(396, 10);
             this.panel2.TabIndex = 0;
             // 
-            // panel12
-            // 
-            this.panel12.Controls.Add(this.autoloopCheck);
-            this.panel12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel12.Location = new System.Drawing.Point(0, 255);
-            this.panel12.Name = "panel12";
-            this.panel12.Padding = new System.Windows.Forms.Padding(10);
-            this.panel12.Size = new System.Drawing.Size(396, 43);
-            this.panel12.TabIndex = 7;
-            // 
-            // autoloopCheck
-            // 
-            this.autoloopCheck.AutoSize = true;
-            this.autoloopCheck.Checked = true;
-            this.autoloopCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoloopCheck.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.autoloopCheck.Location = new System.Drawing.Point(10, 10);
-            this.autoloopCheck.Name = "autoloopCheck";
-            this.autoloopCheck.Size = new System.Drawing.Size(376, 23);
-            this.autoloopCheck.TabIndex = 1;
-            this.autoloopCheck.Text = "Loop Auto Change";
-            this.autoloopCheck.UseVisualStyleBackColor = true;
-            this.autoloopCheck.CheckedChanged += new System.EventHandler(this.autoloopCheck_CheckedChanged);
-            // 
             // DatabaseSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -334,6 +334,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Database";
             this.panel1.ResumeLayout(false);
+            this.panel12.ResumeLayout(false);
+            this.panel12.PerformLayout();
             this.panel11.ResumeLayout(false);
             this.panel11.PerformLayout();
             this.panel9.ResumeLayout(false);
@@ -346,8 +348,6 @@
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel12.ResumeLayout(false);
-            this.panel12.PerformLayout();
             this.ResumeLayout(false);
 
         }

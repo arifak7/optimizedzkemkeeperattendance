@@ -57,15 +57,17 @@ namespace AttendanceOptimized.Objects
                if (!nameRef.ContainsKey(enroll)) nameRef.Add(enroll, name);
             }
         }
+        [HandleProcessCorruptedStateExceptions]
         private void readDataFromMachine(zkemkeeper.CZKEM device)
         {
             try
             {
                 device.ReadGeneralLogData(1);
             }
-            catch(Exception ex)
+            catch(AccessViolationException ex)
             {
-                _Main.addErrorLog("Machine " + DeviceName + " init Read failed");
+                _Main.addErrorLog($"Machine {DeviceName} Read failed");
+                return;
             }
             
             String enroll = "";
@@ -82,7 +84,7 @@ namespace AttendanceOptimized.Objects
                     }
                     catch (Exception e)
                     {
-                        _Main.addErrorLog("Machine " + DeviceName + " failed to insert Record");
+                        _Main.addErrorLog($"Machine {DeviceName} failed to insert Record");
                         continue;
                     }
                 }
@@ -144,7 +146,9 @@ namespace AttendanceOptimized.Objects
             }
             catch(AccessViolationException ex)
             {
-                _Main.restartProgram();
+                device = new zkemkeeper.CZKEMClass();
+                _Main.addErrorLog(DeviceName + " Memory Corruption");
+                _Main.reset();
             }
             Status = (connection) ? "Connected" : "Disconnected";
         }
